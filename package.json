@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.2",
+    "dollars-to-cents": "^1.0.3",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "mocha": "^6.0.2",

@@ -1,58 +1,73 @@
-_ = require("lodash");
+const _ = require("lodash");
+const dollarsToCents = require("dollars-to-cents");
 
 const FILTERS = {
   "search": {
-    fields: ["productName", "shortDescription", "longDescription"],
-    operator: "contains"
+    field: "productName"
   },
   "minPrice": {
-    fields: ["price"],
+    field: "price",
     operator: ">"
   },
   "maxPrice": {
-    fields: ["price"],
+    field: "price",
     operator: "<"
   },
   "minReviewRating": {
-    fields: ["reviewRating"],
+    field: "reviewRating",
     operator: ">"
   },
   "maxReviewRating":{
-    fields: ["reviewRating"],
+    field: "reviewRating",
     operator: "<"
   },
   "minReviewCount": {
-    fields: ["reviewCount"],
+    field: "reviewCount",
     operator: ">"
   },
   "maxReviewCount": {
-    fields: ["reviewCount"],
+    field: "reviewCount",
     operator: "<"
   },
   "inStock": {
-    fields: ["inStock"],
-    operator: "boolean"
+    field: "inStock"
   }
+};
+
+const getProductField = (product, field) => {
+  let productField = product[field];
+  if (/\$/.test(productField)) productField = dollarsToCents(productField);
+  return productField;
 };
 
 const filterProducts = (filters, products) => {
   let filteredProducts = []
   _.each(filters, (value, key) => {
-    filter = FILTERS[key] || null;
+    let filter = FILTERS[key] || null;
+
+    // Whitelist only the supported filters
     if (!filter) return;
+
     filteredProducts = _.filter(products, (product) => {
-      let productField = product[filter.fields[0]]
+      let productField = getProductField(product, filter.field);
+
       if (productField) {
         switch (filter.operator) {
-          case "boolean":
-          if (productField == true) return product;
+          case ">":
+            if (productField > value) return product;
             break;
-        default:
-          if (new RegExp(value).test(productField)) return product;
+
+          case "<":
+            if (productField < value) return product;
+            break;
+
+          default:
+            if (new RegExp(value).test(productField)) return product;
         };
       }
     });
   });
+
   return filteredProducts;
 };
 
