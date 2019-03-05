@@ -11,14 +11,17 @@ let products = [];
 app.get('/', (req, res) => res.sendFile(__dirname + "/README.md"));
 
 app.get("/products", (req, res) => {
-  products = _.flatten(products);
-  filteredProducts = filterProducts(req.query, products);
-  res.json(filteredProducts);
+  let filteredProducts = filterProducts(req.query, products);
+  if (_.isEmpty(req.query)) return res.json({totalProducts: products.length, products: products});
+  res.json({totalProducts: filteredProducts.length, products: filteredProducts});
 });
 
 cacheProducts((err, cachedProducts) => {
-  products = cachedProducts;
+  products = _.flatten(cachedProducts);
   app.listen(port, () => {
-    console.log(`Product Search app listening on port ${port}!`)
+    app.emit("listening");
+    console.log(`Cached ${products.length} products to search with an app listening on port ${port}!`)
   })
 });
+
+module.exports = app;

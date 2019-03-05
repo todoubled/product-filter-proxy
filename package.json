@@ -4,7 +4,7 @@
   "description": "Adds search and filter capability over raw product data",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit --timeout 10000",
     "start": "node index.js"
   },
   "author": "Todd Larsen <toddlar@gmail.com>",
@@ -15,6 +15,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "mocha": "^6.0.2",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "supertest": "^3.4.2"
   }
 }
