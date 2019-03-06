@@ -1,4 +1,4 @@
-# Product Catalog Cache
+# Product Filter Proxy
 
 `npm start`
 
@@ -26,6 +26,6 @@ On app boot, the server process iterates through the catalog of products to buil
 
 ### Known Limitations
 
-As the product catalog size grows, this will become a performance bottleneck. It won't be sufficient to just store it in memory and some other form of persistence will be necessary. 
+As the product catalog size grows, this will become a performance bottleneck. Iterating through every product for filtering will take too long and it won't be sufficient to just store the whole product catalog in memory. Some other form of persistence and querying will be necessary. 
 
 Given more scale, time and dependencies, I'd suggest deploying ElasticSearch to cache the API responses with a webhook for sycing product catalog changes or at the very least a cronjob to refresh the catalog on a schedule via the API.

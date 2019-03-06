@@ -21,7 +21,7 @@ describe("GET /products API", () => {
     it("should filter just the expected products", function(done) {
       request(app).get("/products?maxPrice=5100&minReviewCount=10").end(function(err, res) {
         assert(res.statusCode, 200);
-        assert.equal(res.body.products.length, 32);
+        assert.equal(res.body.products.length, 4);
         done();
       });
     });

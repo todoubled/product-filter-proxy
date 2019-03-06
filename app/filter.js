@@ -42,13 +42,13 @@ const getProductField = (product, field) => {
 
 const filterProducts = (filters, products) => {
   let filteredProducts = []
-  _.each(filters, (value, key) => {
-    let filter = FILTERS[key] || null;
+  _.each(products, (product) => {
+    productMatchesFilters = _.every(filters, (value, key) => {
+      let filter = FILTERS[key] || null;
 
-    // Whitelist only the supported filters
-    if (!filter) return;
+      // Whitelist only the supported filters
+      if (!filter) return;
 
-    filteredProducts = _.filter(products, (product) => {
       let productField = getProductField(product, filter.field);
 
       if (productField) {
@@ -66,6 +66,8 @@ const filterProducts = (filters, products) => {
         };
       }
     });
+
+    if (productMatchesFilters) filteredProducts.push(product)
   });
 
   return filteredProducts;
