@@ -8,12 +8,16 @@ const port = process.env.PORT || 3000;
 
 let products = [];
 
+const respondWith = (response, products) => {
+  response.json({totalProducts: products.length, products: products});
+};
+
 app.get('/', (req, res) => res.sendFile(__dirname + "/README.md"));
 
 app.get("/products", (req, res) => {
-  let filteredProducts = filterProducts(req.query, products);
-  if (_.isEmpty(req.query)) return res.json({totalProducts: products.length, products: products});
-  res.json({totalProducts: filteredProducts.length, products: filteredProducts});
+  const filteredProducts = filterProducts(req.query, products);
+  if (_.isEmpty(req.query)) return respondWith(res, products);
+  respondWith(res, filteredProducts)
 });
 
 cacheProducts((err, cachedProducts) => {

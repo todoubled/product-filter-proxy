@@ -14,7 +14,9 @@ let cacheProductPage = (page, done) => {
 };
 
 let cacheProducts = (done) => {
-  request("https://mobile-tha-server.firebaseapp.com/walmartproducts/1/1", (err, response, body) => {body = JSON.parse(body); let iterations = Math.ceil(body["totalProducts"] / pageSize);
+  request("https://mobile-tha-server.firebaseapp.com/walmartproducts/1/1", (err, response, body) => {
+    body = JSON.parse(body);
+    let iterations = Math.ceil(body["totalProducts"] / pageSize);
     async.times(iterations, cacheProductPage, (err) => {
       done(err, cachedProducts);
     });
